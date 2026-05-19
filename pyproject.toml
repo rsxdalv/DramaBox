@@ -53,6 +53,7 @@ packages = [
     "ltx_core.quantization",
     "ltx_core.text_encoders",
     "ltx_core.text_encoders.gemma",
+    "ltx_core.text_encoders.gemma.encoders",
     "ltx_pipelines",
     "ltx_pipelines.utils",
     "ltx_trainer",
@@ -75,6 +76,7 @@ ltx_core = "ltx2/ltx_core"
 "ltx_core.quantization" = "ltx2/ltx_core/quantization"
 "ltx_core.text_encoders" = "ltx2/ltx_core/text_encoders"
 "ltx_core.text_encoders.gemma" = "ltx2/ltx_core/text_encoders/gemma"
+"ltx_core.text_encoders.gemma.encoders" = "ltx2/ltx_core/text_encoders/gemma/encoders"
 ltx_pipelines = "ltx2/ltx_pipelines"
 "ltx_pipelines.utils" = "ltx2/ltx_pipelines/utils"
 ltx_trainer = "ltx2/ltx_trainer"
