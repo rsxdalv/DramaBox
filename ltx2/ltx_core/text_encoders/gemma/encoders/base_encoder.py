@@ -2,7 +2,7 @@ import functools
 from pathlib import Path
 
 import torch
-from transformers import AutoImageProcessor, Gemma3ForConditionalGeneration, Gemma3Processor
+from transformers import Gemma3ForConditionalGeneration, Gemma3Processor
 
 from ltx_core.loader.module_ops import ModuleOps
 from ltx_core.text_encoders.gemma.tokenizer import LTXVGemmaTokenizer
@@ -183,6 +183,7 @@ def module_ops_from_gemma_root(gemma_root: str) -> tuple[ModuleOps, ...]:
         return module
 
     def load_processor(module: GemmaTextEncoder) -> GemmaTextEncoder:
+        from transformers import AutoImageProcessor
         image_processor = AutoImageProcessor.from_pretrained(processor_root, local_files_only=True)
         if not module.tokenizer:
             raise ValueError("Tokenizer model operation must be performed before processor model operation")
