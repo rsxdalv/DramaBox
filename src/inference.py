@@ -37,11 +37,6 @@ import torch
 import torchaudio
 
 REPO_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "ltx2"))
-# ltx-pipelines already on path via ltx2/
-
-# Also add the local directory so audio_conditioning.py is importable
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 MODEL_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "models")
 GEMMA_DIR = os.environ.get("GEMMA_DIR", "gemma-3-12b-it-qat-q4_0-unquantized")

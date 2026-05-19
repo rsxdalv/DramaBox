@@ -18,14 +18,15 @@ from pathlib import Path
 import torch
 import torchaudio
 
-# Setup paths
-APP_DIR = Path(__file__).parent.parent
-sys.path.insert(0, str(APP_DIR / "ltx2"))
-sys.path.insert(0, str(APP_DIR / "src"))
-
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
-from audio_conditioning import AudioConditionByReferenceLatent
+# APP_DIR points to the DramaBox repo root. When installed as a package the
+# default (site-packages/../..) is only used for fallback model path defaults;
+# callers that supply explicit checkpoint paths can ignore it. Override with
+# the DRAMABOX_DIR env var when running from an installed package.
+APP_DIR = Path(os.environ.get("DRAMABOX_DIR", str(Path(__file__).parent.parent)))
+
+from dramabox.audio_conditioning import AudioConditionByReferenceLatent
 from ltx_core.components.noisers import GaussianNoiser
 from ltx_core.components.patchifiers import AudioPatchifier
 from ltx_core.components.guiders import MultiModalGuider, MultiModalGuiderParams
@@ -55,7 +56,7 @@ DEFAULT_NEG = "worst quality, inconsistent, robotic, distorted, noise, static, m
 def estimate_duration(prompt, multiplier=1.1):
     """Defer to the richer CLI estimator (sentence-aware + non-verbal action
     budget) so warm-server outputs match the lengths of the per-call CLI runs."""
-    from inference import estimate_speech_duration
+    from dramabox.inference import estimate_speech_duration
     base = estimate_speech_duration(prompt)
     return max(3.0, round(base * multiplier, 1))
 
@@ -96,7 +97,7 @@ class TTSServer:
         self.full_checkpoint = full_checkpoint or os.environ.get(
             "LTX_FULL_CHECKPOINT", "/mnt/persistent0/manmay/models/ltx23/ltx-2.3-22b-dev.safetensors")
         if gemma_root is None and not os.environ.get("GEMMA_DIR"):
-            from model_downloader import get_gemma_path
+            from dramabox.model_downloader import get_gemma_path
             gemma_root = get_gemma_path()
         self.gemma_root = gemma_root or os.environ["GEMMA_DIR"]
         self.device = torch.device(device)

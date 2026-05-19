@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dramabox"
+version = "0.0.1"
+description = "Expressively TTS with Voice Cloning by Resemble AI"
+readme = "README.md"
+authors = [
+    { name = "Resemble AI" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.8.0",
+    "torchaudio>=2.8.0",
+    "pydantic==2.10.6",
+    "safetensors>=0.4.0",
+    "accelerate>=0.25.0",
+    "peft>=0.7.0",
+    "av>=12.0.0",
+    "einops>=0.7.0",
+    "PyYAML>=6.0",
+    "sentencepiece>=0.1.99",
+    "transformers>=4.45.0",
+    "huggingface_hub>=0.20.0,<1.0",
+    "bitsandbytes>=0.45.0",
+    "gradio==5.7.1",
+    "spaces>=0.30.0",
+    "soundfile>=0.12.0",
+    "resemble-perth @ git+https://github.com/resemble-ai/Perth.git@master",
+]
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools]
+packages = [
+    "dramabox",
+    "ltx_core",
+    "ltx_core.components",
+    "ltx_core.conditioning",
+    "ltx_core.conditioning.types",
+    "ltx_core.guidance",
+    "ltx_core.loader",
+    "ltx_core.model",
+    "ltx_core.model.audio_vae",
+    "ltx_core.model.common",
+    "ltx_core.model.transformer",
+    "ltx_core.model.upsampler",
+    "ltx_core.model.video_vae",
+    "ltx_core.quantization",
+    "ltx_core.text_encoders",
+    "ltx_core.text_encoders.gemma",
+    "ltx_pipelines",
+    "ltx_pipelines.utils",
+    "ltx_trainer",
+]
+
+[tool.setuptools.package-dir]
+dramabox = "src"
+ltx_core = "ltx2/ltx_core"
+"ltx_core.components" = "ltx2/ltx_core/components"
+"ltx_core.conditioning" = "ltx2/ltx_core/conditioning"
+"ltx_core.conditioning.types" = "ltx2/ltx_core/conditioning/types"
+"ltx_core.guidance" = "ltx2/ltx_core/guidance"
+"ltx_core.loader" = "ltx2/ltx_core/loader"
+"ltx_core.model" = "ltx2/ltx_core/model"
+"ltx_core.model.audio_vae" = "ltx2/ltx_core/model/audio_vae"
+"ltx_core.model.common" = "ltx2/ltx_core/model/common"
+"ltx_core.model.transformer" = "ltx2/ltx_core/model/transformer"
+"ltx_core.model.upsampler" = "ltx2/ltx_core/model/upsampler"
+"ltx_core.model.video_vae" = "ltx2/ltx_core/model/video_vae"
+"ltx_core.quantization" = "ltx2/ltx_core/quantization"
+"ltx_core.text_encoders" = "ltx2/ltx_core/text_encoders"
+"ltx_core.text_encoders.gemma" = "ltx2/ltx_core/text_encoders/gemma"
+ltx_pipelines = "ltx2/ltx_pipelines"
+"ltx_pipelines.utils" = "ltx2/ltx_pipelines/utils"
+ltx_trainer = "ltx2/ltx_trainer"
