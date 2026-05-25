@@ -89,7 +89,14 @@ class XFormersAttention(AttentionCallable):
             mask = mask_out[..., : mask.shape[-1]]
             mask = mask.expand(b, heads, -1, -1)
 
-        out = memory_efficient_attention(q.to(target_dtype), k.to(target_dtype), v, attn_bias=mask, p=0.0)
+        try:
+            out = memory_efficient_attention(q.to(target_dtype), k.to(target_dtype), v, attn_bias=mask, p=0.0)
+        except NotImplementedError:
+            # xformers is installed but has no operator for this GPU/config (e.g. Blackwell) — fall back to PyTorch SDPA
+            q_flat = q.view(b, -1, heads * dim_head)
+            k_flat = k.view(b, -1, heads * dim_head)
+            v_flat = v.view(b, -1, heads * dim_head)
+            return PytorchAttention()(q_flat, k_flat, v_flat, heads, mask)
         out = out.reshape(b, -1, heads * dim_head)
         return out
 
@@ -135,7 +142,9 @@ class AttentionFunction(Enum):
         elif self is AttentionFunction.FLASH_ATTENTION_3:
             return FlashAttention3()
         else:
-            # Default behavior: XFormers if installed else - PyTorch
+            # Priority: FlashAttention3 → XFormers (with runtime SDPA fallback) → PyTorch SDPA
+            if flash_attn_interface is not None:
+                return FlashAttention3()
             return XFormersAttention() if memory_efficient_attention is not None else PytorchAttention()
 
 
